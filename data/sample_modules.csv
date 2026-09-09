@@ -1,0 +1,5 @@
+name,power_wp,voc_v,vmp_v,isc_a,imp_a,voc_temp_coeff_pct_c,vmp_temp_coeff_pct_c,pmax_temp_coeff_pct_c,isc_temp_coeff_pct_c,imp_temp_coeff_pct_c,area_m2,noct_c,source
+Módulo Demonstrativo 450 Wp,450,41.2,34.5,13.7,13.0,-0.28,-0.33,-0.35,0.05,,2.10,45,Dados demonstrativos fictícios
+Módulo Demonstrativo 550 Wp,550,49.8,41.7,14.0,13.2,-0.28,-0.32,-0.35,0.05,,2.58,45,Dados demonstrativos fictícios
+Módulo Demonstrativo 600 Wp,600,52.1,43.9,14.6,13.7,-0.27,-0.31,-0.34,0.05,,2.75,45,Dados demonstrativos fictícios
+Módulo Demonstrativo 700 Wp,700,56.3,47.8,15.2,14.6,-0.26,-0.30,-0.33,0.05,,3.10,45,Dados demonstrativos fictícios

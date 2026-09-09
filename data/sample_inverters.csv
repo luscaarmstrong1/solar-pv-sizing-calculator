@@ -1,0 +1,5 @@
+name,ac_power_kw,max_dc_power_kwp,max_dc_voltage_v,startup_voltage_v,mppt_min_voltage_v,mppt_max_voltage_v,mppt_count,inputs_per_mppt,max_operating_current_per_input_a,max_operating_current_per_mppt_a,max_short_circuit_current_per_input_a,max_short_circuit_current_per_mppt_a,source
+Inversor Demonstrativo 5 kW 2 MPPT,5.0,7.5,600,120,120,550,2,1,16,16,20,20,Dados demonstrativos fictícios
+Inversor Demonstrativo 6 kW 2 MPPT,6.0,9.0,1000,180,160,850,2,2,16,30,20,40,Dados demonstrativos fictícios
+Inversor Demonstrativo 10 kW 2 MPPT,10.0,15.0,1100,200,180,950,2,2,16,32,21,42,Dados demonstrativos fictícios
+Inversor Demonstrativo Incompatível,3.0,3.6,500,150,200,450,1,1,12,12,15,15,Dados demonstrativos fictícios

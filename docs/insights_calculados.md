@@ -1,0 +1,14 @@
+- Potência requerida: 4.98 kWp
+- Potência instalada: 5.50 kWp
+- Módulos: 10 x 550 Wp
+- Inversor: 6.00 kW
+- Strings: MPPT 1: 10 módulos; MPPT 2: sem strings
+- CC/CA: 0.92
+- Geração anual: 7892 kWh
+- Área técnica: 31.0 m²
+- Status: OK
+- Atendimento anual estimado: 110.5%
+- PR efetivo: 80.3%
+- HSP média ponderada: 4.90 h/dia
+- Voc frio máximo de string: 525.9 V
+- Vmp quente de string: 357.0 V

@@ -1,0 +1,22 @@
+{
+  "status": "CONCLUÍDO",
+  "zip_final": "outputs/solar-pv-sizing-calculator-FINAL-PTBR.zip",
+  "planilha": "outputs/Solar_PV_Sizing_Calculator.xlsx",
+  "cenario_base": {
+    "nome": "Residential base case",
+    "potencia_requerida_kwp": 4.976101289021384,
+    "potencia_instalada_kwp": 5.5,
+    "modulos": 10,
+    "geracao_anual_kwh": 7891.720388939865,
+    "relacao_cc_ca": 0.9166666666666666,
+    "status_tecnico": "OK"
+  },
+  "validacoes": {
+    "motor_python": "OK",
+    "validacao_cenarios": "OK",
+    "pytest": "OK",
+    "compileall": "OK",
+    "planilha_excel": "OK",
+    "materiais_portfolio": "OK"
+  }
+}

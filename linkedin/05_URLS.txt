@@ -1,0 +1,3 @@
+GitHub: não publicado automaticamente neste ambiente
+Streamlit: execução local com streamlit run app.py
+Página do Projeto: site/index.html

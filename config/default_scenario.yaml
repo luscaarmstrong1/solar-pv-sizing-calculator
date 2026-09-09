@@ -1,0 +1,50 @@
+scenario_name: Residential base case
+monthly_consumption_kwh: [620, 590, 610, 580, 560, 540, 550, 570, 600, 630, 650, 640]
+coverage_target: 1.0
+monthly_hsp: [5.1, 5.2, 5.0, 4.8, 4.5, 4.3, 4.4, 4.8, 5.0, 5.2, 5.3, 5.2]
+performance_ratio: 0.80
+losses:
+  temperature: 0.08
+  soiling: 0.03
+  mismatch: 0.02
+  shading: 0.02
+  dc_cables: 0.015
+  ac_cables: 0.01
+  inverter: 0.03
+  availability: 0.01
+  other: 0.0
+module:
+  name: Demo Module 550 Wp
+  power_wp: 550
+  voc_v: 49.8
+  vmp_v: 41.7
+  isc_a: 14.0
+  imp_a: 13.2
+  voc_temp_coeff_pct_c: -0.28
+  vmp_temp_coeff_pct_c: -0.32
+  pmax_temp_coeff_pct_c: -0.35
+  isc_temp_coeff_pct_c: 0.05
+  imp_temp_coeff_pct_c:
+  area_m2: 2.58
+  noct_c: 45
+inverter:
+  name: Demo Inverter 6 kW 2 MPPT
+  ac_power_kw: 6.0
+  max_dc_power_kwp: 9.0
+  max_dc_voltage_v: 1000
+  startup_voltage_v: 180
+  mppt_min_voltage_v: 160
+  mppt_max_voltage_v: 850
+  mppt_count: 2
+  inputs_per_mppt: 2
+  max_operating_current_per_input_a: 16
+  max_operating_current_per_mppt_a: 30
+  max_short_circuit_current_per_input_a: 20
+  max_short_circuit_current_per_mppt_a: 40
+minimum_temperature_c: 5
+maximum_cell_temperature_c: 70
+max_voltage_utilization_pct: 0.95
+occupation_factor: 1.20
+available_area_m2: 60
+dc_ac_min: 0.80
+dc_ac_max: 1.35

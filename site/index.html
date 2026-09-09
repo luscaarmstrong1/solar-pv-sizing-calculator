@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculadora de Dimensionamento Fotovoltaico</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; color: #172033; background: #f7fafc; }
+    header { background: #0f766e; color: white; padding: 48px 8%; border-bottom: 8px solid #f59e0b; }
+    main { padding: 32px 8%; max-width: 1100px; margin: auto; }
+    h1 { margin: 0 0 12px; font-size: 42px; }
+    section { margin: 32px 0; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; }
+    .card { background: white; border: 1px solid #d7dee8; border-radius: 8px; padding: 18px; }
+    .metric { font-size: 28px; font-weight: 700; color: #0f766e; }
+    img { max-width: 100%; border: 1px solid #d7dee8; border-radius: 8px; background: white; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Calculadora de Dimensionamento Fotovoltaico</h1>
+    <p>Python, Excel e Streamlit aplicados ao pré-dimensionamento técnico de sistemas FV.</p>
+  </header>
+  <main>
+    <section class="grid">
+      <div class="card"><div>Potência FV requerida</div><div class="metric">4.98 kWp</div></div>
+      <div class="card"><div>Potência instalada</div><div class="metric">5.50 kWp</div></div>
+      <div class="card"><div>Módulos</div><div class="metric">10</div></div>
+      <div class="card"><div>Geração anual</div><div class="metric">7892 kWh</div></div>
+    </section>
+    <section>
+      <h2>Validações</h2>
+      <p>A ferramenta avalia Voc, Vmp, tensão de partida, MPPT, corrente por entrada, corrente por MPPT, entradas físicas, área, geração e relação CC/CA.</p>
+    </section>
+    <section>
+      <h2>Arquitetura</h2>
+      <img src="../assets/diagrams/arquitetura_projeto.png" alt="Arquitetura do projeto">
+    </section>
+  </main>
+</body>
+</html>

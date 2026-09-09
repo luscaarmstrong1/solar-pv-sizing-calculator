@@ -1,0 +1,14 @@
+TOP 5
+1. Energia Solar
+2. Sistemas Fotovoltaicos
+3. Engenharia Elétrica
+4. Python
+5. Projeto de Sistemas Fotovoltaicos
+
+COMPLEMENTARES
+Energias Renováveis
+Excel
+Cálculos de Engenharia
+Engenharia de Energia
+Streamlit
+Data Analysis

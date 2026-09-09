@@ -1,0 +1,21 @@
+NOME
+Calculadora de Dimensionamento Fotovoltaico
+
+NOME INTERNACIONAL OPCIONAL
+Solar PV System Sizing Calculator
+
+DATA DE INÍCIO
+08/09/2026
+
+DATA DE TÉRMINO
+08/09/2026
+
+URL
+Ver linkedin/05_URLS.txt
+
+DESCRIÇÃO
+Desenvolvimento de uma ferramenta de pré-dimensionamento de sistemas fotovoltaicos utilizando Python, Excel e Streamlit. A solução integra análise de consumo, HSP, Performance Ratio, potência FV requerida, seleção preliminar de módulos e inversor, relação CC/CA, dimensionamento inteiro de strings, verificação de MPPT, tensão Voc em frio, tensão Vmp em quente e em frio, corrente operacional, corrente de curto-circuito, geração mensal, área técnica necessária e validações automatizadas.
+
+O projeto foi desenvolvido com dados demonstrativos e tem finalidade de portfólio técnico em Engenharia Elétrica, destacando que o dimensionamento FV não se limita a dividir consumo por geração específica: também exige compatibilidade elétrica entre módulos, inversores, MPPTs, strings, temperatura e limites de datasheet.
+
+Escopo: pré-dimensionamento técnico preliminar. Não substitui projeto executivo, ART ou validação por engenheiro responsável.

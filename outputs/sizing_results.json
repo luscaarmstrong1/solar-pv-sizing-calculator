@@ -1,0 +1,269 @@
+{
+  "scenario_name": "Residential base case",
+  "consumption": {
+    "annual_kwh": 7140,
+    "average_monthly_kwh": 595.0,
+    "average_daily_kwh": 19.561643835616437,
+    "coverage_target": 1.0,
+    "target_annual_kwh": 7140.0
+  },
+  "resource": {
+    "average_hsp": 4.898082191780822,
+    "performance_ratio": 0.8025832042367832
+  },
+  "sizing": {
+    "required_pv_power_kwp": 4.976101289021384,
+    "module_count": 10,
+    "installed_dc_power_kwp": 5.5,
+    "module_area_m2": 25.8,
+    "technical_area_m2": 30.96,
+    "dc_ac_ratio": 0.9166666666666666,
+    "annual_generation_kwh": 7891.720388939865,
+    "annual_coverage_pct": 1.1052829676386366
+  },
+  "module": {
+    "name": "Demo Module 550 Wp",
+    "power_wp": 550,
+    "voc_v": 49.8,
+    "vmp_v": 41.7,
+    "isc_a": 14.0,
+    "imp_a": 13.2,
+    "voc_temp_coeff_pct_c": -0.28,
+    "vmp_temp_coeff_pct_c": -0.32,
+    "pmax_temp_coeff_pct_c": -0.35,
+    "isc_temp_coeff_pct_c": 0.05,
+    "imp_temp_coeff_pct_c": null,
+    "area_m2": 2.58,
+    "noct_c": 45
+  },
+  "inverter": {
+    "name": "Demo Inverter 6 kW 2 MPPT",
+    "ac_power_kw": 6.0,
+    "max_dc_power_kwp": 9.0,
+    "max_dc_voltage_v": 1000,
+    "startup_voltage_v": 180,
+    "mppt_min_voltage_v": 160,
+    "mppt_max_voltage_v": 850,
+    "mppt_count": 2,
+    "inputs_per_mppt": 2,
+    "max_operating_current_per_input_a": 16,
+    "max_operating_current_per_mppt_a": 30,
+    "max_short_circuit_current_per_input_a": 20,
+    "max_short_circuit_current_per_mppt_a": 40
+  },
+  "strings": {
+    "modules_per_string": 10,
+    "total_strings": 1,
+    "strings_per_mppt": [
+      1,
+      0
+    ],
+    "mppt_string_modules": [
+      [
+        10
+      ],
+      []
+    ],
+    "voc_string_v": 525.888,
+    "vmp_string_hot_v": 356.952,
+    "vmp_string_cold_v": 443.6880000000001,
+    "imp_per_mppt_a": [
+      13.2,
+      0.0
+    ],
+    "isc_per_mppt_a": [
+      14.315,
+      0.0
+    ],
+    "max_imp_per_input_a": 13.2,
+    "max_isc_per_input_a": 14.315,
+    "nmax_modules_per_string": 18,
+    "nmin_modules_per_string": 5,
+    "valid": true,
+    "message": "Configura\u00e7\u00e3o de strings compat\u00edvel encontrada com aloca\u00e7\u00e3o inteira dos m\u00f3dulos."
+  },
+  "monthly": [
+    {
+      "month": "Janeiro",
+      "consumption_kwh": 620,
+      "generation_kwh": 697.8862252440948,
+      "difference_kwh": 77.88622524409482,
+      "coverage_pct": 1.1256229439420884,
+      "surplus_kwh": 77.88622524409482,
+      "deficit_kwh": 0
+    },
+    {
+      "month": "Fevereiro",
+      "consumption_kwh": 590,
+      "generation_kwh": 642.7086299528161,
+      "difference_kwh": 52.70862995281607,
+      "coverage_pct": 1.0893366609369763,
+      "surplus_kwh": 52.70862995281607,
+      "deficit_kwh": 0
+    },
+    {
+      "month": "Mar\u00e7o",
+      "consumption_kwh": 610,
+      "generation_kwh": 684.2021816118577,
+      "difference_kwh": 74.20218161185767,
+      "coverage_pct": 1.1216429206751766,
+      "surplus_kwh": 74.20218161185767,
+      "deficit_kwh": 0
+    },
+    {
+      "month": "Abril",
+      "consumption_kwh": 580,
+      "generation_kwh": 635.6458977555322,
+      "difference_kwh": 55.645897755532246,
+      "coverage_pct": 1.0959412030267797,
+      "surplus_kwh": 55.645897755532246,
+      "deficit_kwh": 0
+    },
+    {
+      "month": "Maio",
+      "consumption_kwh": 560,
+      "generation_kwh": 615.7819634506719,
+      "difference_kwh": 55.781963450671924,
+      "coverage_pct": 1.099610649019057,
+      "surplus_kwh": 55.781963450671924,
+      "deficit_kwh": 0
+    },
+    {
+      "month": "Junho",
+      "consumption_kwh": 540,
+      "generation_kwh": 569.4327834059977,
+      "difference_kwh": 29.432783405997725,
+      "coverage_pct": 1.0545051544555513,
+      "surplus_kwh": 29.432783405997725,
+      "deficit_kwh": 0
+    },
+    {
+      "month": "Julho",
+      "consumption_kwh": 550,
+      "generation_kwh": 602.0979198184348,
+      "difference_kwh": 52.097919818434775,
+      "coverage_pct": 1.0947234905789722,
+      "surplus_kwh": 52.097919818434775,
+      "deficit_kwh": 0
+    },
+    {
+      "month": "Agosto",
+      "consumption_kwh": 570,
+      "generation_kwh": 656.8340943473834,
+      "difference_kwh": 86.83409434738337,
+      "coverage_pct": 1.1523405163989182,
+      "surplus_kwh": 86.83409434738337,
+      "deficit_kwh": 0
+    },
+    {
+      "month": "Setembro",
+      "consumption_kwh": 600,
+      "generation_kwh": 662.1311434953461,
+      "difference_kwh": 62.13114349534612,
+      "coverage_pct": 1.103551905825577,
+      "surplus_kwh": 62.13114349534612,
+      "deficit_kwh": 0
+    },
+    {
+      "month": "Outubro",
+      "consumption_kwh": 630,
+      "generation_kwh": 711.570268876332,
+      "difference_kwh": 81.57026887633197,
+      "coverage_pct": 1.129476617264019,
+      "surplus_kwh": 81.57026887633197,
+      "deficit_kwh": 0
+    },
+    {
+      "month": "Novembro",
+      "consumption_kwh": 650,
+      "generation_kwh": 701.8590121050669,
+      "difference_kwh": 51.85901210506688,
+      "coverage_pct": 1.0797830955462568,
+      "surplus_kwh": 51.85901210506688,
+      "deficit_kwh": 0
+    },
+    {
+      "month": "Dezembro",
+      "consumption_kwh": 640,
+      "generation_kwh": 711.570268876332,
+      "difference_kwh": 71.57026887633197,
+      "coverage_pct": 1.1118285451192687,
+      "surplus_kwh": 71.57026887633197,
+      "deficit_kwh": 0
+    }
+  ],
+  "validations": [
+    {
+      "item": "DC power",
+      "status": "OK",
+      "message": "Pot\u00eancia CC instalada 5.50 kWp versus limite do inversor 9.00 kWp."
+    },
+    {
+      "item": "DC/AC ratio",
+      "status": "OK",
+      "message": "Rela\u00e7\u00e3o CC/CA 0.92; faixa preliminar configurada de 0.80 a 1.35."
+    },
+    {
+      "item": "String maximum voltage",
+      "status": "OK",
+      "message": "Voc da string em frio 525.9 V versus limite configurado 950.0 V."
+    },
+    {
+      "item": "Startup voltage",
+      "status": "OK",
+      "message": "Vmp da string em quente 357.0 V versus tens\u00e3o de partida 180.0 V."
+    },
+    {
+      "item": "MPPT minimum voltage",
+      "status": "OK",
+      "message": "Vmp da string em quente 357.0 V versus tens\u00e3o m\u00ednima MPPT 160.0 V."
+    },
+    {
+      "item": "MPPT maximum voltage",
+      "status": "OK",
+      "message": "Vmp da string em frio 443.7 V versus tens\u00e3o m\u00e1xima MPPT 850.0 V."
+    },
+    {
+      "item": "Input operating current",
+      "status": "OK",
+      "message": "Imp m\u00e1xima por entrada 13.2 A versus limite 16.0 A."
+    },
+    {
+      "item": "Input short-circuit current",
+      "status": "OK",
+      "message": "Isc m\u00e1xima por entrada 14.3 A versus limite 20.0 A."
+    },
+    {
+      "item": "MPPT operating current",
+      "status": "OK",
+      "message": "Imp m\u00e1xima por MPPT 13.2 A versus limite 30."
+    },
+    {
+      "item": "MPPT short-circuit current",
+      "status": "OK",
+      "message": "Isc m\u00e1xima por MPPT 14.3 A versus limite 40."
+    },
+    {
+      "item": "Available inputs",
+      "status": "OK",
+      "message": "1 strings necess\u00e1rias versus 4 entradas dispon\u00edveis."
+    },
+    {
+      "item": "Module allocation",
+      "status": "OK",
+      "message": "10 m\u00f3dulos alocados exatamente em 1 strings."
+    },
+    {
+      "item": "Energy target",
+      "status": "OK",
+      "message": "Gera\u00e7\u00e3o anual 7892 kWh versus meta 7140 kWh."
+    },
+    {
+      "item": "Available area",
+      "status": "OK",
+      "message": "\u00c1rea t\u00e9cnica necess\u00e1ria 31.0 m\u00b2 versus \u00e1rea dispon\u00edvel 60.0 m\u00b2."
+    }
+  ],
+  "technical_status": "OK",
+  "warnings": []
+}

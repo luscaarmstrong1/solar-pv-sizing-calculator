@@ -1,0 +1,1 @@
+Desenvolvi uma calculadora de pré-dimensionamento fotovoltaico em Python, Excel e Streamlit. Ela estima potência FV, módulos, inversor, relação CC/CA, strings, geração mensal e área necessária, mas também valida Voc, Vmp, MPPT, tensão de partida e correntes por entrada e por MPPT. O cenário base resultou em 5.50 kWp, 10 módulos e 7892 kWh/ano.

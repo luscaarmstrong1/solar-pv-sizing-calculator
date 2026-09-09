@@ -1,0 +1,9 @@
+1. Abrir o LinkedIn.
+2. Entrar no perfil.
+3. Selecionar Adicionar seção ao perfil.
+4. Escolher Projetos.
+5. Colar o nome de linkedin/01_PROJETO_LINKEDIN.txt.
+6. Colar a descrição de linkedin/01_PROJETO_LINKEDIN.txt.
+7. Inserir a URL pública disponível em linkedin/05_URLS.txt.
+8. Adicionar as competências de linkedin/02_COMPETENCIAS.txt.
+9. Salvar.
