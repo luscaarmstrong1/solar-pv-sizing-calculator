@@ -116,6 +116,11 @@ python scripts/run_sizing.py
 streamlit run app.py
 ```
 
+## Links
+
+- GitHub: https://github.com/luscaarmstrong1/solar-pv-sizing-calculator
+- GitHub Pages: https://luscaarmstrong1.github.io/solar-pv-sizing-calculator/
+
 ## Limitações
 
 O projeto é preliminar e demonstrativo. Não substitui projeto executivo, vistoria de campo, estudo de sombreamento detalhado, análise estrutural, proteção elétrica, aprovação da concessionária, ART ou validação por engenheiro responsável.
@@ -346,9 +351,10 @@ Link: ver repositório público do projeto.
 9. Salvar.
 """)
     write(linkedin_dir / "05_URLS.txt", """
-GitHub: não publicado automaticamente neste ambiente
+GitHub: https://github.com/luscaarmstrong1/solar-pv-sizing-calculator
+GitHub Pages: https://luscaarmstrong1.github.io/solar-pv-sizing-calculator/
 Streamlit: execução local com streamlit run app.py
-Página do Projeto: site/index.html
+Página local do projeto: site/index.html
 """)
     write(linkedin_dir / "06_RESUMO_30_SEGUNDOS.txt", f"""
 Desenvolvi uma calculadora de pré-dimensionamento fotovoltaico em Python, Excel e Streamlit. Ela estima potência FV, módulos, inversor, relação CC/CA, strings, geração mensal e área necessária, mas também valida Voc, Vmp, MPPT, tensão de partida e correntes por entrada e por MPPT. O cenário base resultou em {sizing['installed_dc_power_kwp']:.2f} kWp, {sizing['module_count']} módulos e {sizing['annual_generation_kwh']:.0f} kWh/ano.

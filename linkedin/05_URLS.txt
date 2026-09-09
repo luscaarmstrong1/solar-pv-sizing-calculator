@@ -1,3 +1,4 @@
-GitHub: não publicado automaticamente neste ambiente
+GitHub: https://github.com/luscaarmstrong1/solar-pv-sizing-calculator
+GitHub Pages: https://luscaarmstrong1.github.io/solar-pv-sizing-calculator/
 Streamlit: execução local com streamlit run app.py
-Página do Projeto: site/index.html
+Página local do projeto: site/index.html

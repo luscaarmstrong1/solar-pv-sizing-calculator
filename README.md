@@ -42,6 +42,11 @@ python scripts/run_sizing.py
 streamlit run app.py
 ```
 
+## Links
+
+- GitHub: https://github.com/luscaarmstrong1/solar-pv-sizing-calculator
+- GitHub Pages: https://luscaarmstrong1.github.io/solar-pv-sizing-calculator/
+
 ## Limitações
 
 O projeto é preliminar e demonstrativo. Não substitui projeto executivo, vistoria de campo, estudo de sombreamento detalhado, análise estrutural, proteção elétrica, aprovação da concessionária, ART ou validação por engenheiro responsável.
