@@ -1,900 +1,397 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Calculadora de Dimensionamento e Engenharia Fotovoltaica | Lucas Santos Engenharia</title>
-  <meta name="description" content="Ferramenta de engenharia para dimensionamento técnico de sistemas fotovoltaicos: cálculo de potência por HSP e perdas detalhadas, seleção de módulos e inversores, coordenação CC/CA e validação térmica de strings MPPT em Python, Streamlit e Web." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --navy-deep: #071827;
-      --navy-tech: #102B42;
-      --navy-card: #0d2236;
-      --gold: #D3A15C;
-      --gold-light: #e4bc82;
-      --cream: #F4F6F3;
-      --text-muted: #9eb2c4;
-      --border: rgba(211, 161, 92, 0.24);
-      --success: #34d399;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-      background: radial-gradient(circle at 85% 10%, rgba(211, 161, 92, 0.12), transparent 40%), var(--navy-deep);
-      color: var(--cream);
-      line-height: 1.6;
-    }
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 5vw;
-      background: rgba(7, 24, 39, 0.88);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: var(--cream);
-    }
-    .brand-mark {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 800;
-      font-size: 1.5rem;
-      letter-spacing: 0.04em;
-      color: var(--gold);
-    }
-    .brand-divider {
-      width: 1px;
-      height: 20px;
-      background: var(--border);
-    }
-    .brand-sub {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .nav-link {
-      text-decoration: none;
-      color: var(--cream);
-      font-size: 0.85rem;
-      font-weight: 600;
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      transition: all 0.2s ease;
-    }
-    .nav-link:hover {
-      border-color: var(--border);
-      color: var(--gold);
-    }
-    .nav-cta {
-      background: var(--gold);
-      color: var(--navy-deep);
-      border-color: var(--gold);
-      font-weight: 700;
-    }
-    .nav-cta:hover {
-      background: var(--gold-light);
-      color: var(--navy-deep);
-    }
-    .container {
-      max-width: 1240px;
-      margin: 0 auto;
-      padding: 0 5vw;
-    }
-    .hero {
-      padding: 56px 0 36px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: rgba(211, 161, 92, 0.1);
-      border: 1px solid var(--border);
-      margin-bottom: 18px;
-    }
-    h1 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(2.4rem, 5vw, 4.2rem);
-      font-weight: 800;
-      line-height: 0.98;
-      text-transform: uppercase;
-      margin: 0 0 16px;
-      letter-spacing: 0.01em;
-    }
-    .hero-sub {
-      font-size: clamp(1rem, 1.4vw, 1.18rem);
-      color: var(--text-muted);
-      max-width: 78ch;
-      margin: 0 0 24px;
-    }
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 32px;
-    }
-    .tech-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.76rem;
-      padding: 5px 12px;
-      border-radius: 6px;
-      background: rgba(16, 43, 66, 0.9);
-      border: 1px solid rgba(211, 161, 92, 0.25);
-      color: var(--cream);
-    }
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-    }
-    .kpi-card {
-      background: linear-gradient(160deg, rgba(16, 43, 66, 0.92), rgba(7, 24, 39, 0.95));
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .kpi-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.74rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-    }
-    .kpi-value {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 2.1rem;
-      font-weight: 700;
-      color: var(--gold);
-      line-height: 1.05;
-    }
-    .kpi-detail {
-      font-size: 0.82rem;
-      color: var(--cream);
-      opacity: 0.85;
-    }
-    section {
-      padding: 48px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .section-head {
-      margin-bottom: 28px;
-    }
-    .section-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      display: block;
-      margin-bottom: 6px;
-    }
-    .section-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(1.8rem, 3.2vw, 2.7rem);
-      font-weight: 700;
-      text-transform: uppercase;
-      margin: 0;
-    }
-    .sim-shell {
-      display: grid;
-      grid-template-columns: 360px 1fr;
-      gap: 24px;
-      background: rgba(16, 43, 66, 0.55);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 26px;
-    }
-    @media (max-width: 920px) {
-      .sim-shell { grid-template-columns: 1fr; padding: 18px; }
-    }
-    .sim-controls {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      background: rgba(7, 24, 39, 0.85);
-      padding: 20px;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-    }
-    .sim-control-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-    .sim-control-header label {
-      font-size: 0.86rem;
-      font-weight: 600;
-      color: var(--cream);
-    }
-    .sim-val {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.86rem;
-      font-weight: 600;
-      color: var(--gold);
-      background: rgba(211, 161, 92, 0.12);
-      padding: 2px 8px;
-      border-radius: 6px;
-    }
-    input[type="range"] {
-      width: 100%;
-      accent-color: var(--gold);
-      cursor: pointer;
-    }
-    .sim-output {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-    .sim-metrics {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
-      gap: 12px;
-    }
-    .sim-metric-box {
-      background: rgba(7, 24, 39, 0.9);
-      border: 1px solid rgba(211, 161, 92, 0.22);
-      border-radius: 12px;
-      padding: 14px 16px;
-    }
-    .sim-metric-box span {
-      display: block;
-      font-size: 0.74rem;
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--text-muted);
-      text-transform: uppercase;
-    }
-    .sim-metric-box strong {
-      display: block;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.75rem;
-      color: var(--gold);
-      margin-top: 4px;
-    }
-    .sim-chart-box {
-      background: rgba(7, 24, 39, 0.92);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 18px;
-    }
-    .sim-chart-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .eq-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    .eq-card {
-      background: var(--navy-card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px;
-    }
-    .eq-index {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--gold);
-      letter-spacing: 0.1em;
-    }
-    .eq-card h4 {
-      margin: 6px 0 10px;
-      font-size: 1rem;
-    }
-    .eq-card code {
-      display: block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.84rem;
-      color: var(--gold-light);
-      background: rgba(7, 24, 39, 0.9);
-      padding: 10px 12px;
-      border-radius: 8px;
-      overflow-x: auto;
-    }
-    .arch-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-    }
-    .arch-step {
-      background: rgba(16, 43, 66, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 18px;
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-    }
-    .arch-num {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--gold);
-      line-height: 1;
-    }
-    .arch-step p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: var(--cream);
-    }
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 20px;
-    }
-    .shot-card {
-      margin: 0;
-      background: var(--navy-card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-      transition: transform 0.25s ease;
-    }
-    .shot-card:hover {
-      transform: translateY(-4px);
-    }
-    .shot-frame {
-      background: #040d17;
-      aspect-ratio: 16 / 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    .shot-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .shot-card figcaption {
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.88rem;
-      font-weight: 600;
-    }
-    .shot-idx {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--gold);
-      background: rgba(211, 161, 92, 0.14);
-      padding: 2px 8px;
-      border-radius: 4px;
-    }
-    footer {
-      padding: 44px 0 60px;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-    .footer-box {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      background: var(--navy-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px 28px;
-    }
-    .footer-author strong {
-      color: var(--cream);
-      font-size: 1.05rem;
-      display: block;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Dimensionamento FV & Engenharia de Strings | Lucas Santos Engenharia Interativa V3</title>
+  <meta name="description" content="Dimensionamento elétrico de geradores fotovoltaicos, cascata multiplicativa de perdas (PR), cálculo térmico de tensão de string Voc(Tmin) e Vmp(Tmax), compatibilidade MPPT e Fator de Dimensionamento de Inversor (FDI)." />
+  <link rel="stylesheet" href="./simulator.css" />
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="https://lucas-santos-portfolio-zeta.vercel.app/">
-      <span class="brand-mark">LUCAS SANTOS</span>
-      <span class="brand-divider"></span>
-      <span class="brand-sub">Camada 09 • DIMENSIONAMENTO & STRINGS FV</span>
-    </a>
-    <nav class="nav-links">
-      <a class="nav-link" href="#simulador">Simulador Interativo</a>
-      <a class="nav-link" href="#arquitetura">Equações & Arquitetura</a>
-      <a class="nav-link" href="#galeria">Telas & Gráficos</a>
-      <a class="nav-link" href="https://lucas-santos-portfolio-zeta.vercel.app/#arquitetura">Portfólio Principal</a>
-      <a class="nav-link nav-cta" href="https://github.com/luscaarmstrong1/solar-pv-sizing-calculator" target="_blank" rel="noopener">Código no GitHub ↗</a>
-    </nav>
+  <header class="v3-topbar">
+    <div class="v3-topbar-inner">
+      <a class="v3-brand" href="https://lucassantos.eng.br/#arquitetura">
+        <span class="v3-brand-badge">09</span>
+        <span class="v3-brand-text">
+          <strong>LUCAS SANTOS</strong>
+          <span>Engenharia • Energia • Dados • Tecnologia</span>
+        </span>
+      </a>
+      <nav class="v3-nav" aria-label="Navegação Principal">
+        <a href="#visao-geral">Visão Geral</a>
+        <a href="#simulador">Simulador</a>
+        <a href="#cenarios">Cenários</a>
+        <a href="#metodologia">Metodologia</a>
+        <a href="#resultados">Resultados</a>
+        <a class="v3-nav-cta" href="https://github.com/luscaarmstrong1/solar-pv-sizing-calculator" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="v3-nav-portfolio" href="https://lucassantos.eng.br/#arquitetura">Portfólio</a>
+      </nav>
+    </div>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="eyebrow">CAMADA 09 • Projetos Fotovoltaicos • Engenharia de Detalhamento • MPPT</div>
-      <h1>Calculadora de Dimensionamento e Engenharia Fotovoltaica</h1>
-      <p class="hero-sub">Dimensionamento técnico de geradores FV: cálculo de potência por HSP/PR, coordenação CC/CA (FDI), arranjo inteiro de strings por MPPT e verificação térmica de tensão Voc/Vmp.</p>
-      <div class="badge-row"><span class="tech-badge">Python</span><span class="tech-badge">Coordenação CC/CA</span><span class="tech-badge">Validação Voc & MPPT</span><span class="tech-badge">Streamlit</span><span class="tech-badge">Excel Técnico</span><span class="tech-badge">Pytest</span></div>
-      <div class="kpi-grid">
-      <div class="kpi-card">
-        <span class="kpi-label">Cálculo de PR</span>
-        <strong class="kpi-value">Multiplicativo</strong>
-        <span class="kpi-detail">Térmica, cabos CC/CA, inversor e sujidade</span>
-      </div>
-
-      <div class="kpi-card">
-        <span class="kpi-label">Arranjo de Strings</span>
-        <strong class="kpi-value">Inteiro por MPPT</strong>
-        <span class="kpi-detail">Sem criação de módulos fracionados</span>
-      </div>
-
-      <div class="kpi-card">
-        <span class="kpi-label">Validação Elétrica</span>
-        <strong class="kpi-value">Voc(Tmin) & Vmp</strong>
-        <span class="kpi-detail">Janela operacional do inversor</span>
-      </div>
-
-      <div class="kpi-card">
-        <span class="kpi-label">Balanço Mensal</span>
-        <strong class="kpi-value">12 Meses (HSP)</strong>
-        <span class="kpi-detail">Geração, excedente e compensação</span>
-      </div></div>
-    </section>
-
-    <section id="simulador">
-      <div class="section-head">
-        <span class="section-tag">MODELAGEM INTERATIVA EM TEMPO REAL</span>
-        <h2 class="section-title">Simulador Paramétrico de Engenharia</h2>
-      </div>
-      <div class="sim-shell">
-        <div class="sim-controls">
-          
-      <div class="sim-control">
-        <div class="sim-control-header">
-          <label for="ctrl-monthKwh">Consumo Médio Mensal (kWh/mês)</label>
-          <span class="sim-val" id="val-monthKwh">650</span>
-        </div>
-        <input type="range" id="ctrl-monthKwh" min="250" max="8000" step="50" value="650" />
-      </div>
-
-      <div class="sim-control">
-        <div class="sim-control-header">
-          <label for="ctrl-hspDay">Irradiação Solar HSP Média (h/dia)</label>
-          <span class="sim-val" id="val-hspDay">5.05</span>
-        </div>
-        <input type="range" id="ctrl-hspDay" min="4" max="6.2" step="0.05" value="5.05" />
-      </div>
-
-      <div class="sim-control">
-        <div class="sim-control-header">
-          <label for="ctrl-modWp">Potência Nominal do Módulo (Wp)</label>
-          <span class="sim-val" id="val-modWp">550</span>
-        </div>
-        <input type="range" id="ctrl-modWp" min="450" max="700" step="5" value="550" />
-      </div>
-
-      <div class="sim-control">
-        <div class="sim-control-header">
-          <label for="ctrl-prVal">Performance Ratio Global PR (%)</label>
-          <span class="sim-val" id="val-prVal">78.5</span>
-        </div>
-        <input type="range" id="ctrl-prVal" min="72" max="86" step="0.5" value="78.5" />
-      </div>
-        </div>
-        <div class="sim-output">
-          <div class="sim-metrics" id="sim-metrics"></div>
-          <div class="sim-chart-box">
-            <div class="sim-chart-title">
-              <span id="chart-title">CURVA OPERACIONAL E ECONÔMICA SIMULADA</span>
-              <span id="chart-subtitle">Cálculo determinístico instantâneo</span>
+  <main class="v3-container">
+    <!-- VISÃO GERAL / HERO -->
+    <section id="visao-geral" class="v3-hero">
+      <div class="v3-hero-grid">
+        <div>
+          <div class="v3-eyebrow">CAMADA 09 • Engenharia Fotovoltaica • Strings • MPPT • Proteção CC</div>
+          <h1>Calculadora de Dimensionamento FV & Engenharia de Strings</h1>
+          <p class="v3-hero-sub">Dimensionamento elétrico de geradores fotovoltaicos, cascata multiplicativa de perdas (PR), cálculo térmico de tensão de string Voc(Tmin) e Vmp(Tmax), compatibilidade MPPT e Fator de Dimensionamento de Inversor (FDI).</p>
+          <div class="v3-data-origin">
+            <span>FONTE & RASTREABILIDADE: Datasheets reais de módulos (550 Wp, 600 Wp, 660 Wp) e inversores multi-MPPT com verificação térmica normativa (NBR 16690)</span>
+          </div>
+          <div class="v3-problem-grid">
+            <div class="v3-prob-card">
+              <h3>Problema de Engenharia</h3>
+              <p>Erros no dimensionamento de strings fotovoltaicas causam queima de inversores por sobretensão em manhãs frias (quando a tensão de circuito aberto Voc sobe acima do limite máximo do inversor) ou perda de rastreamento em tardes quentes (quando a tensão Vmp cai abaixo da janela mínima do MPPT).</p>
             </div>
-            <div id="svg-chart-container"></div>
+            <div class="v3-prob-card">
+              <h3>Modelagem & Solução</h3>
+              <p>Esta calculadora executa simultaneamente o balanço energético (abatendo custo de disponibilidade da fase e aplicando perdas de forma multiplicativa) e a verificação elétrica completa da string nos extremos térmicos, validando limites de tensão CC, janela MPPT e FDI.</p>
+            </div>
           </div>
         </div>
+        <div class="v3-schematic-box">
+          <div class="v3-schematic-title">Verificação Elétrica de String: Módulos em Série -> Correção Térmica Voc(Tmin)/Vmp(Tmax) -> Janela MPPT -> Rede CA</div>
+          <svg class="v3-schematic-svg" viewBox="0 0 680 185" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Verificação Elétrica de String: Módulos em Série -> Correção Térmica Voc(Tmin)/Vmp(Tmax) -> Janela MPPT -> Rede CA">
+    <defs>
+      <linearGradient id="v3GradBox" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#102B42" />
+        <stop offset="100%" stop-color="#071827" />
+      </linearGradient>
+      <marker id="v3Arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 1 L 9 5 L 0 9 z" fill="#D3A15C" />
+      </marker>
+    </defs>
+    <rect x="4" y="4" width="672" height="177" rx="10" fill="#06131F" stroke="rgba(211,161,92,0.22)" />
+    <text x="20" y="26" fill="#8898A9" font-family="IBM Plex Mono, monospace" font-size="10">ARQUITETURA DE ENGENHARIA • CAMADA 09</text>
+    
+        <g>
+          <rect x="18" y="46" width="144" height="96" rx="8" fill="url(#v3GradBox)" stroke="#D3A15C" stroke-width="1.6" />
+          <circle cx="34" cy="66" r="5" fill="#D3A15C" />
+          <text x="46" y="70" fill="#F4F6F3" font-family="IBM Plex Mono, monospace" font-size="10" font-weight="600">BLOCO 01</text>
+          <text x="30" y="98" fill="#F4F6F3" font-family="IBM Plex Sans, sans-serif" font-size="11.5" font-weight="700">Módulos em Série</text>
+          <text x="30" y="120" fill="#C8D1DA" font-family="IBM Plex Mono, monospace" font-size="9.5">Voc, Vmp, Isc, β_Voc (-0,27%/°C)</text>
+          <line x1="162" y1="94" x2="180" y2="94" stroke="#D3A15C" stroke-width="2" marker-end="url(#v3Arrow)" />
+        </g>
+      
+        <g>
+          <rect x="182" y="46" width="144" height="96" rx="8" fill="url(#v3GradBox)" stroke="#38BDF8" stroke-width="1.6" />
+          <circle cx="198" cy="66" r="5" fill="#38BDF8" />
+          <text x="210" y="70" fill="#F4F6F3" font-family="IBM Plex Mono, monospace" font-size="10" font-weight="600">BLOCO 02</text>
+          <text x="194" y="98" fill="#F4F6F3" font-family="IBM Plex Sans, sans-serif" font-size="11.5" font-weight="700">Extremo Frio (T_min)</text>
+          <text x="194" y="120" fill="#C8D1DA" font-family="IBM Plex Mono, monospace" font-size="9.5">Verifica N * Voc(Tmin) <= Vmax_inv</text>
+          <line x1="326" y1="94" x2="344" y2="94" stroke="#D3A15C" stroke-width="2" marker-end="url(#v3Arrow)" />
+        </g>
+      
+        <g>
+          <rect x="346" y="46" width="144" height="96" rx="8" fill="url(#v3GradBox)" stroke="#FBBF24" stroke-width="1.6" />
+          <circle cx="362" cy="66" r="5" fill="#FBBF24" />
+          <text x="374" y="70" fill="#F4F6F3" font-family="IBM Plex Mono, monospace" font-size="10" font-weight="600">BLOCO 03</text>
+          <text x="358" y="98" fill="#F4F6F3" font-family="IBM Plex Sans, sans-serif" font-size="11.5" font-weight="700">Extremo Quente (T_max)</text>
+          <text x="358" y="120" fill="#C8D1DA" font-family="IBM Plex Mono, monospace" font-size="9.5">Verifica N * Vmp(Tmax) >= V_MPPT_min</text>
+          <line x1="490" y1="94" x2="508" y2="94" stroke="#D3A15C" stroke-width="2" marker-end="url(#v3Arrow)" />
+        </g>
+      
+        <g>
+          <rect x="510" y="46" width="144" height="96" rx="8" fill="url(#v3GradBox)" stroke="#36D399" stroke-width="1.6" />
+          <circle cx="526" cy="66" r="5" fill="#36D399" />
+          <text x="538" y="70" fill="#F4F6F3" font-family="IBM Plex Mono, monospace" font-size="10" font-weight="600">BLOCO 04</text>
+          <text x="522" y="98" fill="#F4F6F3" font-family="IBM Plex Sans, sans-serif" font-size="11.5" font-weight="700">Inversor & FDI</text>
+          <text x="522" y="120" fill="#C8D1DA" font-family="IBM Plex Mono, monospace" font-size="9.5">Relação CC/CA e Alocação MPPT</text>
+          
+        </g>
+      
+    <text x="20" y="166" fill="#D3A15C" font-family="IBM Plex Mono, monospace" font-size="10">FLUXO MATEMÁTICO DETERMINÍSTICO • VALIDAÇÃO EM TEMPO REAL</text>
+  </svg>
+        </div>
       </div>
     </section>
 
-    <section id="arquitetura">
-      <div class="section-head">
-        <span class="section-tag">FUNDAMENTAÇÃO FÍSICA E MATEMÁTICA</span>
-        <h2 class="section-title">Equações & Arquitetura do Sistema</h2>
+    <!-- BARRA DE CENÁRIOS E EXPORTAÇÃO -->
+    <section id="simulador" class="v3-action-bar" aria-label="Cenários e Exportação">
+      <div class="v3-scenario-pills">
+        <span class="v3-scenario-label">Cenários Rápidos:</span>
+        <button type="button" class="v3-pill-btn active" data-scenario="base">Caso-Base</button>
+        <button type="button" class="v3-pill-btn" data-scenario="conservador">Conservador</button>
+        <button type="button" class="v3-pill-btn" data-scenario="provavel">Provável</button>
+        <button type="button" class="v3-pill-btn" data-scenario="otimista">Otimista</button>
       </div>
-      <div class="eq-grid">
-      <div class="eq-card">
-        <span class="eq-index">EQUAÇÃO 01</span>
-        <h4>Tensão de Circuito Aberto na Temperatura Mínima</h4>
-        <code>V_oc(T_min) = N_s · V_oc,STC · [1 + (β_Voc / 100) · (T_min - 25°C)] ≤ V_max,inversor</code>
+      <div class="v3-toolbar-actions">
+        <button type="button" id="btn-reset-base" class="v3-action-btn">Restaurar Caso-Base</button>
+        <button type="button" id="btn-share-url" class="v3-action-btn">Compartilhar Link</button>
+        <button type="button" id="btn-export-csv" class="v3-action-btn">Exportar CSV</button>
+        <button type="button" id="btn-export-svg" class="v3-action-btn">Exportar Gráfico SVG</button>
+        <button type="button" id="btn-export-pdf" class="v3-action-btn primary">Relatório PDF</button>
       </div>
-
-      <div class="eq-card">
-        <span class="eq-index">EQUAÇÃO 02</span>
-        <h4>Tensão de Máxima Potência em Operação Quente</h4>
-        <code>V_mp(T_cell,max) = N_s · V_mp,STC · [1 + (γ_Vmp / 100) · (T_cell,max - 25°C)] ≥ V_MPPT,min</code>
-      </div>
-
-      <div class="eq-card">
-        <span class="eq-index">EQUAÇÃO 03</span>
-        <h4>Fator de Dimensionamento do Inversor (CC/CA)</h4>
-        <code>FDI = P_CC_Instalada(kWp) / P_CA_Nominal_Inversor(kW)</code>
-      </div></div>
-      <div class="arch-grid">
-      <div class="arch-step">
-        <div class="arch-num">01</div>
-        <p>Levantamento Energético & Recurso Solar (Consumo mensal, disponibilidade da rede e HSP ponderada por mês)</p>
-      </div>
-
-      <div class="arch-step">
-        <div class="arch-num">02</div>
-        <p>Cálculo de Perdas & Potência Requerida (Composição de PR e determinação do número inteiro de módulos)</p>
-      </div>
-
-      <div class="arch-step">
-        <div class="arch-num">03</div>
-        <p>Coordenação de Strings & MPPT (Cálculo dos limites térmicos de tensão Voc a frio e Vmp a quente por entrada MPPT)</p>
-      </div>
-
-      <div class="arch-step">
-        <div class="arch-num">04</div>
-        <p>Validação de Engenharia & Memorial (Checagem automática de corrente Isc/Imp, relação CC/CA, área ocupada e geração anual)</p>
-      </div></div>
     </section>
 
-    <section id="galeria">
-      <div class="section-head">
-        <span class="section-tag">EVIDÊNCIAS VISUAIS E DASHBOARDS</span>
-        <h2 class="section-title">Telas e Resultados Analíticos do Projeto</h2>
+    <!-- WORKSPACE INTERATIVO -->
+    <div class="v3-workspace">
+      <aside class="v3-params-panel" aria-label="Parâmetros de Simulação">
+        <div class="v3-panel-header">
+          <h2>Parâmetros de Entrada</h2>
+          <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);">Tempo Real</span>
+        </div>
+        
+    <div class="v3-param-group">
+      <div class="v3-group-title">Demanda Energética & Irradiação Local</div>
+      
+          <div class="v3-param-item">
+            <div class="v3-param-top">
+              <label class="v3-param-label" for="input-consumoMensalKwh">Consumo Mensal Médio</label>
+              <span class="v3-param-unit">kWh/mês</span>
+            </div>
+            <div class="v3-param-controls">
+              <input id="range-consumoMensalKwh" class="v3-range" type="range" min="120" max="45000" step="15" value="595" aria-label="Consumo Mensal Médio" />
+              <input id="input-consumoMensalKwh" class="v3-num-input" type="number" min="120" max="45000" step="15" value="595" aria-label="Consumo Mensal Médio valor numérico" />
+            </div>
+            <div class="v3-param-meta">
+              <span>Mín: 120 kWh/mês</span>
+              <span>Padrão: 595</span>
+              <span>Máx: 45000 kWh/mês</span>
+            </div>
+            <div class="v3-param-tip">Consumo mensal médio apurado nas últimas 12 faturas.</div>
+          </div>
+        
+            <div class="v3-param-item">
+              <div class="v3-param-top">
+                <label class="v3-param-label" for="input-custoDisponibilidadeKwh">Custo de Disponibilidade ( Padrão de Entrada)</label>
+                <span class="v3-param-unit">kWh</span>
+              </div>
+              <select id="input-custoDisponibilidadeKwh" class="v3-select-input">
+                <option value="30" >Monofásico (30 kWh/mês)</option><option value="50" >Bifásico (50 kWh/mês)</option><option value="100" selected>Trifásico (100 kWh/mês)</option>
+              </select>
+              <div class="v3-param-tip">Franquia mínima faturada pela distribuidora conforme tipo de ligação.</div>
+            </div>
+          
+          <div class="v3-param-item">
+            <div class="v3-param-top">
+              <label class="v3-param-label" for="input-hsp">Horas de Sol Pleno (HSP)</label>
+              <span class="v3-param-unit">kWh/m²/dia</span>
+            </div>
+            <div class="v3-param-controls">
+              <input id="range-hsp" class="v3-range" type="range" min="3.2" max="6.8" step="0.05" value="4.9" aria-label="Horas de Sol Pleno (HSP)" />
+              <input id="input-hsp" class="v3-num-input" type="number" min="3.2" max="6.8" step="0.05" value="4.9" aria-label="Horas de Sol Pleno (HSP) valor numérico" />
+            </div>
+            <div class="v3-param-meta">
+              <span>Mín: 3.2 kWh/m²/dia</span>
+              <span>Padrão: 4.9</span>
+              <span>Máx: 6.8 kWh/m²/dia</span>
+            </div>
+            <div class="v3-param-tip">Irradiação solar diária média no plano inclinado.</div>
+          </div>
+        
+    </div>
+  
+    <div class="v3-param-group">
+      <div class="v3-group-title">Seleção de Equipamentos (Módulo & Inversor)</div>
+      
+            <div class="v3-param-item">
+              <div class="v3-param-top">
+                <label class="v3-param-label" for="input-moduloPreset">Especificação do Módulo FV</label>
+                <span class="v3-param-unit">Wp</span>
+              </div>
+              <select id="input-moduloPreset" class="v3-select-input">
+                <option value="550" selected>550 Wp Mono PERC (Voc=49,8V • Vmp=41,9V)</option><option value="600" >600 Wp N-Type TOPCon (Voc=51,8V • Vmp=43,6V)</option><option value="660" >660 Wp Bifacial Dual-Glass (Voc=45,6V • Vmp=38,3V)</option>
+              </select>
+              <div class="v3-param-tip">Define os parâmetros elétricos STC e coeficientes térmicos do módulo.</div>
+            </div>
+          
+            <div class="v3-param-item">
+              <div class="v3-param-top">
+                <label class="v3-param-label" for="input-inversorPreset">Inversor Interativo Selecionado</label>
+                <span class="v3-param-unit">kW</span>
+              </div>
+              <select id="input-inversorPreset" class="v3-select-input">
+                <option value="6" selected>6,0 kW (Vmáx 1000V • MPPT 160-850V • 2 MPPTs)</option><option value="10" >10,0 kW (Vmáx 1100V • MPPT 200-950V • 3 MPPTs)</option><option value="25" >25,0 kW Comercial (Vmáx 1100V • MPPT 200-1000V • 4 MPPTs)</option><option value="75" >75,0 kW Industrial (Vmáx 1100V • MPPT 200-1000V • 6 MPPTs)</option>
+              </select>
+              <div class="v3-param-tip">Define os limites de tensão máxima de entrada e faixa operacional do MPPT.</div>
+            </div>
+          
+    </div>
+  
+    <div class="v3-param-group">
+      <div class="v3-group-title">Extremos Térmicos, Perdas & Arranjo de String</div>
+      
+          <div class="v3-param-item">
+            <div class="v3-param-top">
+              <label class="v3-param-label" for="input-tMinRecord">Temperatura Mínima Histórica (T_min)</label>
+              <span class="v3-param-unit">°C</span>
+            </div>
+            <div class="v3-param-controls">
+              <input id="range-tMinRecord" class="v3-range" type="range" min="-15" max="20" step="1" value="-2" aria-label="Temperatura Mínima Histórica (T_min)" />
+              <input id="input-tMinRecord" class="v3-num-input" type="number" min="-15" max="20" step="1" value="-2" aria-label="Temperatura Mínima Histórica (T_min) valor numérico" />
+            </div>
+            <div class="v3-param-meta">
+              <span>Mín: -15 °C</span>
+              <span>Padrão: -2</span>
+              <span>Máx: 20 °C</span>
+            </div>
+            <div class="v3-param-tip">Menor temperatura ambiente local para cálculo da sobretensão Voc a frio.</div>
+          </div>
+        
+          <div class="v3-param-item">
+            <div class="v3-param-top">
+              <label class="v3-param-label" for="input-tMaxCell">Temperatura Máxima de Célula (T_max)</label>
+              <span class="v3-param-unit">°C</span>
+            </div>
+            <div class="v3-param-controls">
+              <input id="range-tMaxCell" class="v3-range" type="range" min="45" max="90" step="1" value="70" aria-label="Temperatura Máxima de Célula (T_max)" />
+              <input id="input-tMaxCell" class="v3-num-input" type="number" min="45" max="90" step="1" value="70" aria-label="Temperatura Máxima de Célula (T_max) valor numérico" />
+            </div>
+            <div class="v3-param-meta">
+              <span>Mín: 45 °C</span>
+              <span>Padrão: 70</span>
+              <span>Máx: 90 °C</span>
+            </div>
+            <div class="v3-param-tip">Temperatura máxima atingida pela célula sob sol pleno para verificar queda de Vmp.</div>
+          </div>
+        
+          <div class="v3-param-item">
+            <div class="v3-param-top">
+              <label class="v3-param-label" for="input-perdaTermicaPct">Perda Térmica Média Anual</label>
+              <span class="v3-param-unit">%</span>
+            </div>
+            <div class="v3-param-controls">
+              <input id="range-perdaTermicaPct" class="v3-range" type="range" min="2" max="18" step="0.5" value="8.5" aria-label="Perda Térmica Média Anual" />
+              <input id="input-perdaTermicaPct" class="v3-num-input" type="number" min="2" max="18" step="0.5" value="8.5" aria-label="Perda Térmica Média Anual valor numérico" />
+            </div>
+            <div class="v3-param-meta">
+              <span>Mín: 2 %</span>
+              <span>Padrão: 8.5</span>
+              <span>Máx: 18 %</span>
+            </div>
+            <div class="v3-param-tip">Perda energética anual por operação acima de 25 °C.</div>
+          </div>
+        
+          <div class="v3-param-item">
+            <div class="v3-param-top">
+              <label class="v3-param-label" for="input-perdaOutrasPct">Perdas Ópticas, Cabos, Sujidade & Inversor</label>
+              <span class="v3-param-unit">%</span>
+            </div>
+            <div class="v3-param-controls">
+              <input id="range-perdaOutrasPct" class="v3-range" type="range" min="4" max="25" step="0.5" value="12.3" aria-label="Perdas Ópticas, Cabos, Sujidade & Inversor" />
+              <input id="input-perdaOutrasPct" class="v3-num-input" type="number" min="4" max="25" step="0.5" value="12.3" aria-label="Perdas Ópticas, Cabos, Sujidade & Inversor valor numérico" />
+            </div>
+            <div class="v3-param-meta">
+              <span>Mín: 4 %</span>
+              <span>Padrão: 12.3</span>
+              <span>Máx: 25 %</span>
+            </div>
+            <div class="v3-param-tip">Perdas complementares combinadas de forma multiplicativa no PR.</div>
+          </div>
+        
+          <div class="v3-param-item">
+            <div class="v3-param-top">
+              <label class="v3-param-label" for="input-modPorStringManual">Módulos em Série por String (0 = Auto)</label>
+              <span class="v3-param-unit">mód/str</span>
+            </div>
+            <div class="v3-param-controls">
+              <input id="range-modPorStringManual" class="v3-range" type="range" min="0" max="26" step="1" value="0" aria-label="Módulos em Série por String (0 = Auto)" />
+              <input id="input-modPorStringManual" class="v3-num-input" type="number" min="0" max="26" step="1" value="0" aria-label="Módulos em Série por String (0 = Auto) valor numérico" />
+            </div>
+            <div class="v3-param-meta">
+              <span>Mín: 0 mód/str</span>
+              <span>Padrão: 0</span>
+              <span>Máx: 26 mód/str</span>
+            </div>
+            <div class="v3-param-tip">Deixe 0 para cálculo automático ótimo ou informe um valor para testar sobretensão/subtensão.</div>
+          </div>
+        
+    </div>
+  
+      </aside>
+
+      <div class="v3-results-col">
+        
+        <div id="v3-status-banner" class="v3-status-banner" role="status"></div>
+        <div id="v3-kpi-grid" class="v3-kpi-grid"></div>
+
+        <div class="v3-chart-panel">
+          <div class="v3-chart-header">
+            <div class="v3-chart-tabs" role="tablist">
+              <button type="button" class="v3-tab-btn active" data-tab="voltage">1. Janela Operacional de Tensão da String (Vmp Quente a Voc Frio)</button><button type="button" class="v3-tab-btn " data-tab="monthly">2. Geração Mensal Sazonal vs Consumo (12 Meses)</button>
+            </div>
+          </div>
+          <div id="v3-chart-canvas" class="v3-chart-canvas"></div>
+        </div>
+
+        <div class="v3-insights-panel">
+          <h2 class="v3-section-title">Diagnóstico Técnico & Recomendações de Engenharia</h2>
+          <div id="v3-insights-list" class="v3-insights-list"></div>
+        </div>
       </div>
-      <div class="gallery-grid">
-      <figure class="shot-card">
-        <div class="shot-frame">
-          <img src="assets/screenshots/01_visao_geral.png" alt="Resumo Executivo do Dimensionamento Fotovoltaico" loading="lazy" />
-        </div>
-        <figcaption>
-          <span class="shot-idx">01</span>
-          <span>Resumo Executivo do Dimensionamento Fotovoltaico</span>
-        </figcaption>
-      </figure>
+    </div>
 
-      <figure class="shot-card">
-        <div class="shot-frame">
-          <img src="assets/screenshots/03_dimensionamento.png" alt="Cálculo Energético, PR e Potência Instalada" loading="lazy" />
-        </div>
-        <figcaption>
-          <span class="shot-idx">02</span>
-          <span>Cálculo Energético, PR e Potência Instalada</span>
-        </figcaption>
-      </figure>
+    <!-- COMPARADOR MULTICENÁRIO -->
+    <section id="cenarios" class="v3-table-section">
+      <h2 class="v3-section-title">Matriz Comparativa de Cenários (Caso-Base vs Conservador, Provável, Otimista e Simulação Atual)</h2>
+      <div class="v3-table-wrap">
+        <table class="v3-table">
+          <thead>
+            <tr>
+              <th>Indicador Técnico-Econômico</th>
+              <th>Caso-Base</th>
+              <th>Conservador</th>
+              <th>Provável</th>
+              <th>Otimista</th>
+              <th>Simulação Atual</th>
+            </tr>
+          </thead>
+          <tbody id="v3-scenario-tbody"></tbody>
+        </table>
+      </div>
+    </section>
 
-      <figure class="shot-card">
-        <div class="shot-frame">
-          <img src="assets/screenshots/05_inversor.png" alt="Coordenação Módulo-Inversor e Relação CC/CA" loading="lazy" />
-        </div>
-        <figcaption>
-          <span class="shot-idx">03</span>
-          <span>Coordenação Módulo-Inversor e Relação CC/CA</span>
-        </figcaption>
-      </figure>
+    <!-- SÉRIE CALCULADA / RESULTADOS -->
+    <section id="resultados" class="v3-table-section">
+      <h2 class="v3-section-title">Memória de Cálculo e Série Detalhada (Exportável em CSV)</h2>
+      <div class="v3-table-wrap">
+        <table class="v3-table">
+          <thead id="v3-data-thead"></thead>
+          <tbody id="v3-data-tbody"></tbody>
+        </table>
+      </div>
+    </section>
 
-      <figure class="shot-card">
-        <div class="shot-frame">
-          <img src="assets/screenshots/06_strings.png" alt="Arranjo de Strings e Limites de Tensão MPPT" loading="lazy" />
-        </div>
-        <figcaption>
-          <span class="shot-idx">04</span>
-          <span>Arranjo de Strings e Limites de Tensão MPPT</span>
-        </figcaption>
-      </figure>
-
-      <figure class="shot-card">
-        <div class="shot-frame">
-          <img src="assets/screenshots/07_geracao.png" alt="Curva Anual de Geração vs. Consumo Mensal" loading="lazy" />
-        </div>
-        <figcaption>
-          <span class="shot-idx">05</span>
-          <span>Curva Anual de Geração vs. Consumo Mensal</span>
-        </figcaption>
-      </figure>
-
-      <figure class="shot-card">
-        <div class="shot-frame">
-          <img src="assets/screenshots/08_validacao.png" alt="Checklist de Conformidade Elétrica da Engenharia" loading="lazy" />
-        </div>
-        <figcaption>
-          <span class="shot-idx">06</span>
-          <span>Checklist de Conformidade Elétrica da Engenharia</span>
-        </figcaption>
-      </figure></div>
+    <!-- METODOLOGIA E EQUAÇÕES -->
+    <section id="metodologia" class="v3-table-section">
+      <h2 class="v3-section-title">Metodologia, Equações Governantes e Premissas</h2>
+      <div class="v3-eq-grid">
+        
+          <div class="v3-eq-card">
+            <h3>Performance Ratio (PR) por Composição Multiplicativa de Perdas</h3>
+            <div class="v3-eq-formula">PR = Π_k (1 - l_k) = (1 - l_térmica) * (1 - l_óptica) * (1 - l_cabos) * (1 - l_inversor)</div>
+            <p>Evita o erro clássico de somar percentuais linearmente; calcula o rendimento real encadeado.</p>
+          </div>
+        
+          <div class="v3-eq-card">
+            <h3>Limites Térmicos de Tensão da String (ABNT NBR 16690)</h3>
+            <div class="v3-eq-formula">Voc(T_min) = N_s * Voc_STC * [1 + β_Voc * (T_min - 25)] <= V_max_inversor</div>
+            <p>Como β_Voc é negativo (-0,25% a -0,27%/°C), temperaturas baixas elevam a tensão Voc, determinando o número máximo absoluto de módulos em série.</p>
+          </div>
+        
+          <div class="v3-eq-card">
+            <h3>Verificação da Janela Mínima de Rastreamento MPPT a Quente</h3>
+            <div class="v3-eq-formula">Vmp(T_max) = N_s * Vmp_STC * [1 + β_Vmp * (T_max - 25)] >= V_MPPT_min</div>
+            <p>Garante que mesmo sob temperatura celular de 70 °C a tensão da string permaneça acima da tensão mínima de partida do MPPT.</p>
+          </div>
+        
+      </div>
     </section>
   </main>
 
-  <footer class="container">
-    <div class="footer-box">
-      <div class="footer-author">
-        <strong>Lucas Silva Santos • Engenheiro Eletricista & Gerente de Projetos</strong>
-        <span>Energia • Dados • Inteligência Artificial • Automação • São João da Boa Vista, SP • Itajubá, MG</span>
-      </div>
-      <div class="nav-links">
-        <a class="nav-link" href="https://lucas-santos-portfolio-zeta.vercel.app/">Portfólio</a>
-        <a class="nav-link" href="https://www.linkedin.com/in/lucasssantos1/" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="nav-link nav-cta" href="https://github.com/luscaarmstrong1/solar-pv-sizing-calculator" target="_blank" rel="noopener">Explorar Repositório ↗</a>
-      </div>
+  <footer class="v3-footer">
+    <div><strong>Lucas Santos</strong> • Engenheiro Eletricista • Portfólio de Engenharia Interativa V3</div>
+    <div>As simulações possuem caráter técnico-analítico de apoio à decisão; projetos executivos requerem estudos específicos de proteção, rede e regulação local.</div>
+    <div class="v3-footer-links">
+      <a href="https://lucassantos.eng.br/#arquitetura">Voltar ao Portfólio Principal</a>
+      <a href="https://github.com/luscaarmstrong1/solar-pv-sizing-calculator" target="_blank" rel="noopener noreferrer">Repositório GitHub (solar-pv-sizing-calculator)</a>
+      <a href="https://github.com/luscaarmstrong1" target="_blank" rel="noopener noreferrer">GitHub @luscaarmstrong1</a>
     </div>
   </footer>
 
-  <script>
-    const SIM_TYPE = "pv_sizing";
-    const fmtBRL = (n) => "R$ " + Number(n).toLocaleString("pt-BR", { maximumFractionDigits: 0 });
-    const fmtNum = (n, d = 1) => Number(n).toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d });
-
-    function renderSvgBars(labels, seriesA, seriesB, labelA, labelB) {
-      const w = 680, h = 230, padL = 44, padR = 18, padT = 22, padB = 34;
-      const plotW = w - padL - padR;
-      const plotH = h - padT - padB;
-      const maxVal = Math.max(...seriesA, ...(seriesB || [0]), 1) * 1.12;
-      const n = labels.length;
-      const step = plotW / n;
-      let bars = "";
-      for (let i = 0; i < n; i++) {
-        const xCenter = padL + i * step + step / 2;
-        const bw = seriesB ? Math.max(6, step * 0.34) : Math.max(10, step * 0.56);
-        const hA = Math.max(2, (seriesA[i] / maxVal) * plotH);
-        const yA = padT + plotH - hA;
-        const xA = seriesB ? xCenter - bw - 1 : xCenter - bw / 2;
-        bars += `<rect x="${xA.toFixed(1)}" y="${yA.toFixed(1)}" width="${bw.toFixed(1)}" height="${hA.toFixed(1)}" rx="3" fill="#D3A15C" opacity="0.92" />`;
-        if (seriesB) {
-          const hB = Math.max(2, (seriesB[i] / maxVal) * plotH);
-          const yB = padT + plotH - hB;
-          const xB = xCenter + 1;
-          bars += `<rect x="${xB.toFixed(1)}" y="${yB.toFixed(1)}" width="${bw.toFixed(1)}" height="${hB.toFixed(1)}" rx="3" fill="#38bdf8" opacity="0.88" />`;
-        }
-        if (i % Math.ceil(n / 12) === 0) {
-          bars += `<text x="${xCenter.toFixed(1)}" y="${h - 10}" fill="#9eb2c4" font-size="10" font-family="JetBrains Mono" text-anchor="middle">${labels[i]}</text>`;
-        }
-      }
-      const grid = [0.25, 0.5, 0.75, 1].map(f => {
-        const y = padT + plotH * (1 - f);
-        const val = (maxVal * f).toFixed(0);
-        return `<line x1="${padL}" y1="${y.toFixed(1)}" x2="${w - padR}" y2="${y.toFixed(1)}" stroke="rgba(255,255,255,0.07)" stroke-dasharray="3 3" />
-                <text x="${padL - 6}" y="${(y + 3).toFixed(1)}" fill="#9eb2c4" font-size="9.5" font-family="JetBrains Mono" text-anchor="end">${val}</text>`;
-      }).join("");
-      const legend = `<g transform="translate(${padL}, 12)">
-        <rect x="0" y="-8" width="10" height="10" rx="2" fill="#D3A15C" />
-        <text x="14" y="0" fill="#F4F6F3" font-size="10.5" font-family="JetBrains Mono">${labelA}</text>
-        ${seriesB ? `<rect x="180" y="-8" width="10" height="10" rx="2" fill="#38bdf8" /><text x="194" y="0" fill="#F4F6F3" font-size="10.5" font-family="JetBrains Mono">${labelB}</text>` : ""}
-      </g>`;
-      return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="auto" role="img">${grid}${bars}${legend}</svg>`;
-    }
-
-    function updateSimulation() {
-      const getVal = (id) => {
-        const el = document.getElementById("ctrl-" + id);
-        const v = el ? parseFloat(el.value) : 0;
-        const lbl = document.getElementById("val-" + id);
-        if (lbl) lbl.textContent = v.toLocaleString("pt-BR");
-        return v;
-      };
-
-      let metrics = [];
-      let svg = "";
-
-      if (SIM_TYPE === "digital_twin") {
-        const mwp = getVal("mwp");
-        const pr = getVal("pr") / 100;
-        const bess = getVal("bess");
-        const spread = getVal("spread");
-        const genMwh = mwp * 5.15 * 365 * pr;
-        const bessMwhYr = (bess * 0.88 * 330) / 1000;
-        const revArbitrage = bessMwhYr * spread;
-        const lcos = Math.max(290, 680 - (bess / 30) - (spread * 0.15));
-        metrics = [
-          { label: "Geração Esperada FV", value: fmtNum(genMwh, 0) + " MWh/ano" },
-          { label: "Energia Despachada BESS", value: fmtNum(bessMwhYr, 0) + " MWh/ano" },
-          { label: "Receita de Arbitragem", value: fmtBRL(revArbitrage) + "/ano" },
-          { label: "LCOS Estimado", value: "R$ " + fmtNum(lcos, 0) + "/MWh" },
-        ];
-        const hrs = Array.from({ length: 12 }, (_, i) => (i * 2 + 6) + "h");
-        const pvCurve = [0.05, 0.28, 0.68, 0.95, 1.0, 0.88, 0.54, 0.15, 0.0, 0.0, 0.0, 0.0].map(f => +(f * mwp * pr * 1000).toFixed(0));
-        const bessCurve = [0, 0, 0, 0, 0, 0, 40, +(bess * 0.38).toFixed(0), +(bess * 0.45).toFixed(0), +(bess * 0.18).toFixed(0), 0, 0];
-        svg = renderSvgBars(hrs, pvCurve, bessCurve, "Geração FV (kW)", "Despacho BESS Ponta (kW)");
-      } else if (SIM_TYPE === "energy_ai") {
-        const baseLoad = getVal("baseLoad");
-        const solarCap = getVal("solarCap");
-        const shiftPct = getVal("shiftPct") / 100;
-        const sigma = getVal("sigma");
-        const peakRedMw = baseLoad * 1.25 * shiftPct;
-        const annualSavings = (peakRedMw * 1000 * 480 * 12) * 0.42 + (solarCap * 1650 * 420);
-        const anomalies = Math.max(3, Math.round(48 / sigma));
-        metrics = [
-          { label: "Redução na Ponta", value: fmtNum(peakRedMw, 2) + " MW" },
-          { label: "Economia Otimizada", value: fmtBRL(annualSavings) + "/ano" },
-          { label: "Eventos Anômalos/Ano", value: anomalies + " alertas" },
-          { label: "Acurácia Forecasting", value: "97,2% (1-MAPE)" },
-        ];
-        const hrs = ["02h","04h","06h","08h","10h","12h","14h","16h","18h","20h","22h","24h"];
-        const orig = [0.7,0.68,0.75,0.92,1.05,1.08,1.1,1.12,1.32,1.35,1.05,0.82].map(f => +(f * baseLoad).toFixed(2));
-        const opt = [0.78,0.76,0.82,0.95,0.98,0.92,0.94,1.02,1.32*(1-shiftPct),1.35*(1-shiftPct),1.08,0.88].map(v => +v.toFixed(2));
-        svg = renderSvgBars(hrs, orig, opt, "Carga Base (MW)", "Carga Otimizada IA (MW)");
-      } else if (SIM_TYPE === "power_system") {
-        const loadGrowth = getVal("loadGrowth");
-        const solarWindAdd = getVal("solarWindAdd");
-        const hydroStorage = getVal("hydroStorage");
-        const mmgdAdd = getVal("mmgdAdd");
-        const totalCap = 206 + solarWindAdd + mmgdAdd;
-        const renShare = Math.min(94.5, 86.5 + (solarWindAdd + mmgdAdd) * 0.25);
-        const pldEst = Math.max(69, 340 - hydroStorage * 2.6 - solarWindAdd * 2.2);
-        metrics = [
-          { label: "Capacidade SIN + MMGD", value: fmtNum(totalCap, 1) + " GW" },
-          { label: "Participação Renovável", value: fmtNum(renShare, 1) + "%" },
-          { label: "Expansão Anual Limpa", value: "+" + fmtNum(solarWindAdd + mmgdAdd, 1) + " GW" },
-          { label: "PLD Médio Estimado", value: "R$ " + fmtNum(pldEst, 0) + "/MWh" },
-        ];
-        const subs = ["Hídrica", "Eólica", "Solar Central.", "MMGD Solar", "Biomassa", "Térmica"];
-        const gwBase = [109, 31 + solarWindAdd * 0.45, 16 + solarWindAdd * 0.55, 33 + mmgdAdd, 17, 29];
-        const gwEff = gwBase.map((v, i) => +(v * [0.52, 0.42, 0.27, 0.21, 0.45, (100 - hydroStorage) * 0.006][i]).toFixed(1));
-        svg = renderSvgBars(subs, gwBase, gwEff, "Capacidade Instalada (GW)", "Geração Média (GWmed)");
-      } else if (SIM_TYPE === "solar_feasibility") {
-        const consumo = getVal("consumo");
-        const tarifa = getVal("tarifa");
-        const hsp = getVal("hsp");
-        const capexUnit = getVal("capexUnit");
-        const kwp = (consumo / 30) / (hsp * 0.79);
-        const capex = kwp * capexUnit;
-        const ecoAno1 = consumo * 12 * 0.92 * tarifa;
-        const payback = capex / ecoAno1;
-        const vpl = ecoAno1 * 10.6 - capex;
-        metrics = [
-          { label: "Potência Recomendada", value: fmtNum(kwp, 1) + " kWp" },
-          { label: "CAPEX Estimado", value: fmtBRL(capex) },
-          { label: "Payback Simples", value: fmtNum(payback, 1) + " anos" },
-          { label: "VPL (25 Anos)", value: fmtBRL(vpl) },
-        ];
-        const yrs = ["A1","A3","A5","A7","A10","A13","A16","A19","A22","A25"];
-        const gen = [1,3,5,7,10,13,16,19,22,25].map(y => Math.round((ecoAno1 * y * 0.94) / 1000));
-        const costLine = yrs.map(() => Math.round(capex / 1000));
-        svg = renderSvgBars(yrs, gen, costLine, "Economia Acumulada (R$ mil)", "Investimento CAPEX (R$ mil)");
-      } else if (SIM_TYPE === "mercado_livre") {
-        const consumoMwh = getVal("consumoMwh");
-        const demandaKw = getVal("demandaKw");
-        const tarifaAcr = getVal("tarifaAcr");
-        const precoAcl = getVal("precoAcl");
-        const fioAnual = demandaKw * 34 * 12;
-        const custoAcr = consumoMwh * 12 * tarifaAcr + fioAnual * 1.45;
-        const custoAcl = consumoMwh * 12 * (precoAcl + 28) + fioAnual * 0.72;
-        const ecoAnual = Math.max(0, custoAcr - custoAcl);
-        const pct = (ecoAnual / custoAcr) * 100;
-        metrics = [
-          { label: "Custo Anual ACR", value: fmtBRL(custoAcr) },
-          { label: "Custo Anual ACL", value: fmtBRL(custoAcl) },
-          { label: "Economia Anual", value: fmtBRL(ecoAnual) + " (" + fmtNum(pct, 1) + "%)" },
-          { label: "Economia em 5 Anos", value: fmtBRL(ecoAnual * 5.45) },
-        ];
-        const anos = ["Ano 1", "Ano 2", "Ano 3", "Ano 4", "Ano 5"];
-        const sAcr = [1, 1.06, 1.12, 1.19, 1.26].map(f => Math.round((custoAcr * f) / 1000));
-        const sAcl = [1, 1.04, 1.08, 1.13, 1.18].map(f => Math.round((custoAcl * f) / 1000));
-        svg = renderSvgBars(anos, sAcr, sAcl, "Custo Cativo ACR (R$ mil)", "Custo Livre ACL (R$ mil)");
-      } else if (SIM_TYPE === "green_hydrogen") {
-        const renMw = getVal("renMw");
-        const elecMw = getVal("elecMw");
-        const sec = getVal("sec");
-        const capexElec = getVal("capexElec");
-        const energyMwh = Math.min(renMw * 0.44, elecMw * 0.76) * 8760;
-        const h2Tons = (energyMwh * 1000) / sec / 1000;
-        const lcoh = Math.max(2.4, ((elecMw * capexElec * 1000 * 0.14) + energyMwh * 32) / (h2Tons * 1000));
-        const co2Avoided = h2Tons * 9.8;
-        metrics = [
-          { label: "Produção Anual H₂V", value: fmtNum(h2Tons, 0) + " ton/ano" },
-          { label: "LCOH Estimado", value: "US$ " + fmtNum(lcoh, 2) + "/kg" },
-          { label: "Emissões Evitadas", value: fmtNum(co2Avoided, 0) + " tCO₂/ano" },
-          { label: "Fator Capacidade PEM", value: fmtNum((energyMwh / (elecMw * 8760)) * 100, 1) + "%" },
-        ];
-        const meses = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
-        const h2M = [0.95,0.92,0.98,1.02,1.05,1.08,1.12,1.15,1.1,1.04,0.98,0.96].map(f => Math.round((h2Tons / 12) * f));
-        svg = renderSvgBars(meses, h2M, null, "Produção Mensal de H₂ Verde (toneladas)", "");
-      } else if (SIM_TYPE === "project_mgmt") {
-        const projCount = getVal("projCount");
-        const avgKwp = getVal("avgKwp");
-        const slaPct = getVal("slaPct");
-        const leadDays = getVal("leadDays");
-        const totalMwp = (projCount * avgKwp) / 1000;
-        const onTime = Math.round(projCount * (slaPct / 100));
-        const revEst = projCount * (3800 + avgKwp * 28);
-        metrics = [
-          { label: "Potência Total Carteira", value: fmtNum(totalMwp, 2) + " MWp" },
-          { label: "Projetos Dentro do SLA", value: onTime + " / " + projCount },
-          { label: "Ciclo Médio Conexão", value: leadDays + " dias" },
-          { label: "Receita de Engenharia", value: fmtBRL(revEst) },
-        ];
-        const etapas = ["Levantamento", "Projeto Executivo", "Parecer Acesso", "Adequação/Obras", "Vistoria", "Homologado"];
-        const dist = [0.12, 0.18, 0.24, 0.16, 0.10, 0.20].map(f => Math.round(projCount * f));
-        svg = renderSvgBars(etapas, dist, null, "Projetos por Etapa Operacional (unid)", "");
-      } else if (SIM_TYPE === "energy_mgmt") {
-        const indConsumo = getVal("indConsumo");
-        const peakDemand = getVal("peakDemand");
-        const solarShare = getVal("solarShare") / 100;
-        const effTarget = getVal("effTarget") / 100;
-        const gridMwh = indConsumo * (1 - solarShare) * (1 - effTarget);
-        const monthlyBill = gridMwh * 640 + peakDemand * (1 - effTarget * 0.6) * 42;
-        const annualSavings = (indConsumo * 640 * 12) - (monthlyBill * 12);
-        metrics = [
-          { label: "Consumo Rede Líquido", value: fmtNum(gridMwh, 1) + " MWh/mês" },
-          { label: "Fatura Mensal Otimizada", value: fmtBRL(monthlyBill) },
-          { label: "Economia Anual Total", value: fmtBRL(annualSavings) + "/ano" },
-          { label: "Redução de Pegada CO₂", value: fmtNum((indConsumo - gridMwh) * 12 * 0.082, 1) + " tCO₂/ano" },
-        ];
-        const hrs = ["02h","04h","06h","08h","10h","12h","14h","16h","18h","20h","22h","24h"];
-        const baseD = [0.55,0.52,0.62,0.88,0.96,0.94,0.98,0.95,1.0,0.92,0.74,0.60].map(f => Math.round(f * peakDemand));
-        const optD = baseD.map((v, i) => Math.round(v * (1 - effTarget) * (i >= 4 && i <= 7 ? (1 - solarShare * 0.55) : 1)));
-        svg = renderSvgBars(hrs, baseD, optD, "Demanda Original (kW)", "Demanda Líquida com Solar + Eficiência (kW)");
-      } else if (SIM_TYPE === "pv_sizing") {
-        const monthKwh = getVal("monthKwh");
-        const hspDay = getVal("hspDay");
-        const modWp = getVal("modWp");
-        const prVal = getVal("prVal") / 100;
-        const reqKwp = (monthKwh / 30) / (hspDay * prVal);
-        const nMods = Math.ceil((reqKwp * 1000) / modWp);
-        const instKwp = (nMods * modWp) / 1000;
-        const invKw = +(instKwp / 1.18).toFixed(1);
-        const genYear = instKwp * hspDay * prVal * 365;
-        metrics = [
-          { label: "Potência Instalada", value: fmtNum(instKwp, 2) + " kWp" },
-          { label: "Arranjo de Módulos", value: nMods + " × " + modWp + " Wp" },
-          { label: "Inversor Sugerido", value: fmtNum(invKw, 1) + " kW (FDI 1,18)" },
-          { label: "Geração Anual", value: fmtNum(genYear, 0) + " kWh/ano" },
-        ];
-        const meses = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
-        const saz = [1.08,1.06,1.04,0.96,0.88,0.84,0.86,0.96,1.02,1.08,1.11,1.11].map(f => Math.round((genYear / 12) * f));
-        const cons = meses.map(() => Math.round(monthKwh));
-        svg = renderSvgBars(meses, saz, cons, "Geração Mensal Estimada (kWh)", "Consumo Mensal (kWh)");
-      }
-
-      document.getElementById("sim-metrics").innerHTML = metrics
-        .map(m => `<div class="sim-metric-box"><span>${m.label}</span><strong>${m.value}</strong></div>`)
-        .join("");
-      document.getElementById("svg-chart-container").innerHTML = svg;
-    }
-
-    document.querySelectorAll('input[type="range"]').forEach(el => {
-      el.addEventListener("input", updateSimulation);
-    });
-    updateSimulation();
-  </script>
+  <script src="./simulator.js"></script>
 </body>
 </html>
